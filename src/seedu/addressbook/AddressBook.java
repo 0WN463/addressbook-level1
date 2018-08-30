@@ -477,6 +477,19 @@ public class AddressBook {
     }
 
     /**
+     * Converts any collection of string to a set with all lowercase copies of it
+     * @param inList any collections of strings
+     * @return set of strings in lowercase
+     */
+    public static Set<String> convertToLowerCase(Collection<String> inList) {
+        final Set<String> list = new HashSet<>();
+        for(String names: inList){
+            list.add(names.toLowerCase());
+        }
+        return list;
+    }
+
+    /**
      * Retrieves all persons in the full model whose names contain some of the specified keywords.
      *
      * @param keywords for searching
@@ -485,7 +498,8 @@ public class AddressBook {
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
         for (String[] person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
+            final Set<String> wordsInName = new HashSet<>(convertToLowerCase(splitByWhitespace(getNameFromPerson(person))));
+            keywords = convertToLowerCase(keywords);
             if (!Collections.disjoint(wordsInName, keywords)) {
                 matchedPersons.add(person);
             }
